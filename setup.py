@@ -1,7 +1,16 @@
 # -*- coding: utf-8 -*-
 
+import os
+
 from setuptools import setup, find_packages
 from distutils.core import Command
+
+
+here = os.path.abspath(os.path.dirname(__file__))
+
+# Get the long description from the README file
+with open(os.path.join(here, 'README.rst')) as f:
+    long_description = f.read()
 
 
 class Test(Command):
@@ -36,9 +45,26 @@ setup(
     name='django-collectionfield',
     version='0.0.1',
     description='Custom Django model field to store multiple values.',
+    long_description=long_description,
+    url='https://github.com/escer/django-collectionfield',
     author='Pawel Scierski',
     author_email='escer@protonmail.com',
-    url='https://github.com/escer/django-collectionfield',
+    license='MIT',
+    classifiers=[
+        'Development Status :: 3 - Alpha',
+        'Intended Audience :: Developers',
+        'Environment :: Web Environment',
+        'License :: OSI Approved :: MIT License',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.4',
+        'Framework :: Django :: 1.8',
+        'Framework :: Django :: 1.9',
+        'Topic :: Internet :: WWW/HTTP',
+    ],
+    keywords='django models fields collections',
     packages=find_packages(),
     cmdclass={'test': Test},
 )
