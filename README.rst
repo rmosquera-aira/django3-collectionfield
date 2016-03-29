@@ -43,7 +43,7 @@ Pass values to model field:
 Making queries
 ~~~~~~~~~~~~~~
 
-Query model instances for particular collection item:
+Retrieve model instances with particular value present in the collection:
 
 .. code-block:: python
 
@@ -115,28 +115,20 @@ Choices and collection size limit:
    tagged_model.get_tags_display(delimiter='', mapper=li_mapper, wrapper=ul_wrapper)
    '<ul><li>Action</li><li>Horror</li></ul>'
 
-Django built-in validators work with entire field values. django-collectionfield provide validation of single collection items:
+Django built-in validators work with entire field values. ``django-collectionfield`` provide validation of single collection items:
 
 .. code-block:: python
 
-   from django.core.validators import MinValueValidator, MaxValueValidator
-   from collectionfield.validators import item_validators
+   from collectionfield.validators import (
+       ItemMinValueValidator, ItemMaxValueValidator
+   )
 
    class IntegerList(models.Model):
        values = CollectionField(
            item_type=int,
-           # validators passed to ``item_validators`` function will be applied
-           # to each collection item separately:
-           validators=item_validators([
-               MinValueValidator(1),
-               MaxValueValidator(5)
-           ])
+           # item validators check each item separately:
+           validators=[ItemMinValueValidator(1), ItemMaxValueValidator(5)]
        )
-   # Alternatively you can define class-based item validators
-   # using ``collectionfield.validators.ItemValidatorMixin`` or
-   # convert an existing validator class using ``item_validator`` function:
-   from collectionfield.validators import item_validator
-   ItemMinValueValidator = item_validator(MinValueValidator)
 
 Form fields
 ~~~~~~~~~~~
