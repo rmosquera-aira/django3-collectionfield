@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import inspect
-
-from django.core.validators import MaxLengthValidator
+from django.core import validators
 from django.utils.deconstruct import deconstructible
 from django.utils.translation import ungettext_lazy
 
@@ -18,7 +16,7 @@ class ItemValidatorMixin(object):
 
 
 @deconstructible
-class ConvertedMaxLengthValidator(MaxLengthValidator):
+class ConvertedMaxLengthValidator(validators.MaxLengthValidator):
 
     def __init__(self, limit_value, collection_type, item_type, sort,
                  unique_items, delimiter, **kwargs):
@@ -57,7 +55,7 @@ class ConvertedMaxLengthValidator(MaxLengthValidator):
 
 
 @deconstructible
-class MaxItemsValidator(MaxLengthValidator):
+class MaxItemsValidator(validators.MaxLengthValidator):
     message = ungettext_lazy(
         singular=(
             'Ensure this value has at most %(limit_value)d item '
@@ -72,26 +70,38 @@ class MaxItemsValidator(MaxLengthValidator):
     code = 'max_items'
 
 
-def item_validator(validator):
+# Predefined item validators:
 
-    if inspect.isclass(validator):
-        if issubclass(validator, ItemValidatorMixin):
-            _item_validator = validator
-        else:
-            _item_validator = deconstructible(
-                type(
-                    'Item{0}'.format(validator.__name__),
-                    (ItemValidatorMixin, validator)
-                )
-            )
-    else:
-
-        def _item_validator(value):
-            for item in value:
-                validator(item)
-
-    return _item_validator
+@deconstructible
+class ItemRegexValidator(ItemValidatorMixin, validators.RegexValidator):
+    pass
 
 
-def item_validators(validators):
-    return [item_validator(validator) for validator in validators]
+@deconstructible
+class ItemURLValidator(ItemValidatorMixin, validators.URLValidator):
+    pass
+
+
+@deconstructible
+class ItemEmailValidator(ItemValidatorMixin, validators.EmailValidator):
+    pass
+
+
+@deconstructible
+class ItemMinValueValidator(ItemValidatorMixin, validators.MinValueValidator):
+    pass
+
+
+@deconstructible
+class ItemMaxValueValidator(ItemValidatorMixin, validators.MaxValueValidator):
+    pass
+
+
+@deconstructible
+class ItemMinLengthValidator(ItemValidatorMixin, validators.MinLengthValidator):
+    pass
+
+
+@deconstructible
+class ItemMaxLengthValidator(ItemValidatorMixin, validators.MaxLengthValidator):
+    pass
