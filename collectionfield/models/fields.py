@@ -60,10 +60,21 @@ def create_get_field_display(field):
 
 
 class CollectionField(Field):
+    """Model field to store collections"""
 
     def __init__(self, verbose_name=None, name=None, collection_type=list,
                  item_type=six.text_type, sort=False, unique_items=None,
                  max_items=None, delimiter='|', **kwargs):
+        """
+        :param collection_type: type (class) of this collection
+        :param item_type: type (class) of this collection's items
+        :param sort: should items be sorted automatically?
+        :param unique_items: should duplicate items be dropped?
+        :param max_items: maximum number of items (enforced on validation)
+        :param delimiter: separates items in string representation stored in db
+        :param max_length: maximum length string representation
+                           of this collection
+        """
         self.collection_type = collection_type
         self.item_type = item_type
         self.sort = sort
@@ -153,14 +164,18 @@ class CollectionField(Field):
                 raise exceptions.ValidationError(
                     self.error_messages['invalid_choice'],
                     code='invalid_choice',
-                    params={'value': selected_choices[0]},
+                    params={'value': list(selected_choices)[0]},
                 )
 
         if value is None and not self.null:
-            raise exceptions.ValidationError(self.error_messages['null'], code='null')
+            raise exceptions.ValidationError(
+                self.error_messages['null'], code='null'
+            )
 
         if not self.blank and value in self.empty_values:
-            raise exceptions.ValidationError(self.error_messages['blank'], code='blank')
+            raise exceptions.ValidationError(
+                self.error_messages['blank'], code='blank'
+            )
 
     def formfield(self, **kwargs):
         """Form field instance for this model field"""
