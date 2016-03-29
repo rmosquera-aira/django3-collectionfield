@@ -1,5 +1,5 @@
 django-collectionfield
-----------------------
+======================
 
 A reusable Django model field to store collections.
 
