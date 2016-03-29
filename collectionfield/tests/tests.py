@@ -132,7 +132,8 @@ class ModelSaveTestCase(TestCase):
     def test_save_string_list_model_using_set(self):
         StringListModel.objects.create(values={'A', 'B'})
         obj = StringListModel.objects.get()
-        self.assertEqual(obj.values, ['A', 'B'])
+        self.assertIsInstance(obj.values, list)
+        self.assertEqual(set(obj.values), {'A', 'B'})
 
     def test_save_decimal_set_model_using_tuple(self):
         DecimalSetModel.objects.create(
