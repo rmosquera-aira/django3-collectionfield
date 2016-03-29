@@ -8,7 +8,9 @@ from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 from collectionfield.models import CollectionField
-from collectionfield.validators import item_validators
+from collectionfield.validators import (
+    ItemMinValueValidator, ItemMaxValueValidator
+)
 
 
 class StringListModel(models.Model):
@@ -46,9 +48,7 @@ class OptionalRangedIntegerListModel(models.Model):
 
     values = CollectionField(
         item_type=int,
-        validators=item_validators(
-            [MinValueValidator(1), MaxValueValidator(5)]
-        ),
+        validators=[ItemMinValueValidator(1), ItemMaxValueValidator(5)],
         blank=True
     )
 
