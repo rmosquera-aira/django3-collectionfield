@@ -1,6 +1,9 @@
 django-collectionfield
 ======================
 
+.. image:: https://api.travis-ci.org/escer/django-collectionfield.svg?branch=master
+.. image:: https://img.shields.io/pypi/v/django-collectionfield.svg
+
 A reusable Django model field to store collections.
 
 Features
@@ -13,7 +16,13 @@ Features
 - extended ``get_FIELD_display`` method for model fields with choices
 - works with database backends without native support for multi-value columns (like ArrayField for PostgreSQL)
 
-.. TODO: Installation
+Installation
+------------
+
+.. code-block:: python
+
+   pip install django-collectionfield
+   
 
 Usage
 -----
@@ -205,8 +214,7 @@ Requirements
 ------------
 
 Python: 2.7, 3.4
-Django: 1.8, 1.9
 
-.. TODO: CI and coverage
+Django: 1.8, 1.9
 
 .. TODO: Changes
