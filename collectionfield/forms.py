@@ -66,6 +66,7 @@ class CollectionField(CollectionFieldMixin, forms.Field):
     def prepare_value(self, value):
         """Converts value to string for widget usage"""
         if not isinstance(value, six.string_types):
+            value = value or ()
             value = self.collection_type(
                 self.item_type(item) for item in value
             )
@@ -139,6 +140,7 @@ class CollectionChoiceField(CollectionFieldMixin, forms.MultipleChoiceField):
     def prepare_value(self, value):
         """Converts value to list of string for widget usage"""
         if not isinstance(value, choicelist):
+            value = value or ()
             value = self.collection_type(
                 self.item_type(item) for item in value
             )

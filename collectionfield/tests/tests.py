@@ -586,6 +586,91 @@ class ModelValidationTestCase(TestCase):
             cm.exception.error_dict['values'][0].code, 'max_length'
         )
 
+    def test_flat_choices(self):
+        obj1 = ChoiceStringListModel(values=['aaa', 'ccc'])
+        try:
+            obj1.full_clean()
+        except ValidationError:
+            self.fail("full_clean() raised ValidationError unexectedly.")
+        obj2 = ChoiceStringListModel(values=['aaa', 'XXX'])
+        with self.assertRaises(ValidationError) as cm:
+            obj2.full_clean()
+        self.assertEqual(
+            cm.exception.error_dict['values'][0].code, 'invalid_choice'
+        )
+
+    def test_grouped_choices(self):
+        obj1 = OptionalGroupedChoiceIntegerListModel(values=[11, 21, 22])
+        try:
+            obj1.full_clean()
+        except ValidationError:
+            self.fail("full_clean() raised ValidationError unexectedly.")
+        obj2 = OptionalGroupedChoiceIntegerListModel(values=[11, 21, 99])
+        with self.assertRaises(ValidationError) as cm:
+            obj2.full_clean()
+        self.assertEqual(
+            cm.exception.error_dict['values'][0].code, 'invalid_choice'
+        )
+
+    def test_blank(self):
+        obj1 = OptionalIntegerTupleModel()
+        try:
+            obj1.full_clean()
+        except ValidationError:
+            self.fail("full_clean() raised ValidationError unexectedly.")
+        obj2 = IntegerTupleModel()
+        with self.assertRaises(ValidationError) as cm:
+            obj2.full_clean()
+        self.assertEqual(
+            cm.exception.error_dict['values'][0].code, 'blank'
+        )
+
+    def test_item_validators(self):
+        obj1 = OptionalRangedIntegerListModel(values=[2, 4])
+        try:
+            obj1.full_clean()
+        except ValidationError:
+            self.fail("full_clean() raised ValidationError unexectedly.")
+        obj2 = OptionalRangedIntegerListModel(values=[0, 9])
+        with self.assertRaises(ValidationError) as cm:
+            obj2.full_clean()
+        self.assertEqual(
+            cm.exception.error_dict['values'][0].code, 'min_value'
+        )
+        self.assertEqual(
+            cm.exception.error_dict['values'][1].code, 'max_value'
+        )
+
+
+class DeconstructTestCase(TestCase):
+
+    def test_string_list_field(self):
+        field = StringListModel._meta.get_field('values')
+        self.assertEqual(field.deconstruct()[3], {})
+
+    def test_optional_integer_tuple_field(self):
+        field = IntegerTupleModel._meta.get_field('values')
+        self.assertEqual(
+            field.deconstruct()[3],
+            {
+                'item_type': int,
+                'collection_type': tuple
+            }
+        )
+
+    def test_grouped_choice_integer_set_field(self):
+        field = OptionalGroupedChoiceStringListModel._meta.get_field('values')
+        self.assertEqual(
+            field.deconstruct()[3],
+            {
+                'blank': True,
+                'choices': [
+                    ('Group A', (('a1', 'A1'), ('a2', 'A2'))),
+                    ('Group B', (('b1', 'B1'), ('b2', 'B2')))
+                ]
+             }
+        )
+
 
 class FormCollectionFieldTestCase(TestCase):
 
@@ -734,6 +819,21 @@ class FormCollectionFieldTestCase(TestCase):
         })
         self.assertFalse(form.is_valid())
         self.assertEqual(form.errors.as_data()['values'][0].code, 'max_length')
+
+    def test_html_widget_without_value(self):
+        bound_field = StringSetForm()['values']
+        self.assertEqual(
+            bound_field.as_widget(),
+            '<input id="id_values" name="values" type="text" />'
+        )
+
+    def test_html_widget_with_value(self):
+        bound_field = SortedStringListForm({'values': 'a, b, c'})['values']
+        self.assertEqual(
+            bound_field.as_widget(),
+            '<input id="id_values" name="values" type="text" '
+            'value="a, b, c" />'
+        )
 
 
 class FormCollectionChoiceFieldTestCase(TestCase):
@@ -992,6 +1092,35 @@ class FormCollectionChoiceFieldTestCase(TestCase):
         form = ChoiceOptionalDecimalSetForm({'values': []})
         self.assertTrue(form.is_valid())
         self.assertEqual(form.cleaned_data['values'], set())
+
+    # HTML widgets:
+
+    def test_html_widget_without_value(self):
+        bound_field = GroupedChoiceDecimalTupleForm()['values']
+        self.assertEqual(
+            bound_field.as_widget(),
+            '<select multiple="multiple" id="id_values" name="values">\n'
+            '<optgroup label="Group 1">\n'
+            '<option value="1.1">1-1</option>\n'
+            '<option value="1.2">1-2</option>\n'
+            '</optgroup>\n'
+            '<optgroup label="Group 2">\n'
+            '<option value="2.1">2-1</option>\n'
+            '<option value="2.2">2-2</option>\n'
+            '</optgroup>\n'
+            '</select>'
+        )
+
+    def test_html_widget_with_value(self):
+        bound_field = ChoiceIntegerSetForm({'values': [1, 2]})['values']
+        self.assertEqual(
+            bound_field.as_widget(),
+            '<select multiple="multiple" id="id_values" name="values">\n'
+            '<option value="1" selected="selected">One</option>\n'
+            '<option value="2" selected="selected">Two</option>\n'
+            '<option value="3">Three</option>\n'
+            '<option value="4">Four</option>\n</select>'
+        )
 
 
 class ModelFormCollectionFieldTestCase(TestCase):
