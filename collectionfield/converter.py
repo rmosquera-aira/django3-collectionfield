@@ -12,6 +12,7 @@ class CollectionConverter(object):
         self.delimiter = delimiter
 
     def dump(self, value):
+        value = value or ()
         value = self.collection_type(self.item_type(item) for item in value)
         if isinstance(value, set) or not self.unique_items:
             collection = value
@@ -30,6 +31,7 @@ class CollectionConverter(object):
         )
 
     def load(self, value):
+        value = value or ''
         n = len(self.delimiter)
         return self.collection_type(
             self.item_type(s) for s in value[n:-n].split(self.delimiter) if s

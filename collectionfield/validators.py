@@ -98,10 +98,12 @@ class ItemMaxValueValidator(ItemValidatorMixin, validators.MaxValueValidator):
 
 
 @deconstructible
-class ItemMinLengthValidator(ItemValidatorMixin, validators.MinLengthValidator):
+class ItemMinLengthValidator(ItemValidatorMixin,
+                             validators.MinLengthValidator):
     pass
 
 
 @deconstructible
-class ItemMaxLengthValidator(ItemValidatorMixin, validators.MaxLengthValidator):
+class ItemMaxLengthValidator(ItemValidatorMixin,
+                             validators.MaxLengthValidator):
     pass

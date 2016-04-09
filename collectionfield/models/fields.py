@@ -126,16 +126,13 @@ class CollectionField(Field):
         return 'CharField'
 
     def from_db_value(self, value, expression, connection, context):
-        if value is None:
-            return self.collection_type()  # None
         return self.collection_converter.load(value)
 
     def to_python(self, value):
         if isinstance(value, self.collection_type):
             return value
-        if value is None:
-            return self.collection_type()  # None
-        return self.collection_converter.load(value)
+        else:
+            return self.collection_converter.load(value)
 
     def get_prep_value(self, value):
         return self.collection_converter.dump(value)

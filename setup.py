@@ -43,7 +43,7 @@ class Test(Command):
 
 setup(
     name='django-collectionfield',
-    version='0.0.1',
+    version='0.0.2',
     description='Custom Django model field to store multiple values.',
     long_description=long_description,
     url='https://github.com/escer/django-collectionfield',

@@ -5,7 +5,6 @@ from __future__ import unicode_literals
 import decimal
 
 from django.db import models
-from django.core.validators import MinValueValidator, MaxValueValidator
 
 from collectionfield.models import CollectionField
 from collectionfield.validators import (
