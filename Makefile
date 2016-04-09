@@ -6,6 +6,14 @@ virtualenv:
 
 develop: virtualenv
 	.env/bin/pip install Django==$(DJANGO_VERSION)
+	.env/bin/pip install -r requirements-test.pip
 
 test:
 	.env/bin/python setup.py test
+
+coverage:
+	.env/bin/coverage run setup.py test
+	.env/bin/coverage report
+
+flake8:
+	.env/bin/flake8 collectionfield --max-complexity=15
