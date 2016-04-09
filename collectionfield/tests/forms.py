@@ -5,7 +5,6 @@ from decimal import Decimal
 from django import forms
 
 from collectionfield.forms import CollectionField, CollectionChoiceField
-from .models import StringListModel
 
 
 class StringSetForm(forms.Form):

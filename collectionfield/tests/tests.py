@@ -301,10 +301,10 @@ class HasAllLookupTestCase(TestCase):
         )
 
     def test_has_all_decimals(self):
-        obj1 = DecimalSetModel.objects.create(
+        DecimalSetModel.objects.create(
             values={Decimal('2.5'), Decimal('1.0'), Decimal('3.5')}
         )
-        obj2 = DecimalSetModel.objects.create(
+        DecimalSetModel.objects.create(
             values={Decimal('3.0'), Decimal('3.5'), Decimal('1.0')}
         )
         obj3 = DecimalSetModel.objects.create(
@@ -438,13 +438,13 @@ class HasAnyLookupTestCase(TestCase):
 class OtherQueriesTestCase(TestCase):
 
     def test_full_match(self):
-        obj1 = StringListModel.objects.create(
+        StringListModel.objects.create(
             values=['Aliens', 'Starships', 'Aliens']
         )
         obj2 = StringListModel.objects.create(
             values=['Lions', 'Jungle']
         )
-        obj3 = StringListModel.objects.create(
+        StringListModel.objects.create(
             values=['Pyramids', 'Aliens', 'Lions']
         )
         obj4 = StringListModel.objects.create(
