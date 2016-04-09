@@ -1,0 +1,4 @@
+[run]
+source = collectionfield
+omit = collectionfield/tests/*
+branch = true

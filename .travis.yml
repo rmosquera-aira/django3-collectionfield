@@ -8,5 +8,9 @@ env:
   - DJANGO_VERSION=1.9
 install:
   - pip install -q Django==$DJANGO_VERSION
+  - pip install -r requirements-test.pip
 script:
-  - python setup.py test
+  - flake8 collectionfield --max-complexity=15
+  - coverage run setup.py test
+after_success:
+  - coveralls
