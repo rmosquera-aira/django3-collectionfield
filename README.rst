@@ -1,9 +1,12 @@
 django-collectionfield
 ======================
 
-.. image:: https://api.travis-ci.org/escer/django-collectionfield.svg?branch=master :target: https://travis-ci.org/escer/django-collectionfield
-.. image:: https://img.shields.io/pypi/v/django-collectionfield.svg :target: https://pypi.python.org/pypi/django-collectionfield
-.. image:: https://coveralls.io/repos/github/escer/django-collectionfield/badge.svg?branch=master :target: https://coveralls.io/github/escer/django-collectionfield?branch=master
+.. image:: https://api.travis-ci.org/escer/django-collectionfield.svg?branch=master
+   :target: https://travis-ci.org/escer/django-collectionfield
+.. image:: https://img.shields.io/pypi/v/django-collectionfield.svg
+   :target: https://pypi.python.org/pypi/django-collectionfield
+.. image:: https://coveralls.io/repos/github/escer/django-collectionfield/badge.svg?branch=master
+   :target: https://coveralls.io/github/escer/django-collectionfield?branch=master
 
 A reusable Django model field to store collections.
 
