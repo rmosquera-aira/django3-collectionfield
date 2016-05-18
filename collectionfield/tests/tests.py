@@ -2,10 +2,12 @@
 
 from __future__ import unicode_literals
 
+import json
 from decimal import Decimal
 
 from django.utils import six
 from django.core.exceptions import ValidationError
+from django.core.serializers import serialize, deserialize
 from django.forms import modelform_factory
 
 from django.test import TestCase
@@ -670,6 +672,31 @@ class DeconstructTestCase(TestCase):
                 ]
              }
         )
+
+
+class ModelSerializationTestCase(TestCase):
+
+    def test_model_serialization_json(self):
+        obj = IntegerTupleModel.objects.create(values=(3, 1, 2))
+        self.assertEqual(
+            json.loads(serialize('json', [obj])),
+            json.loads(
+                '[{'
+                '"fields": {"values": "|3|1|2|"}, '
+                '"model": "tests.integertuplemodel", "pk": 1'
+                '}]'
+            )
+        )
+
+    def test_model_deserialization_json(self):
+        dump = (
+            '[{'
+            '"fields": {"values": "|3|1|2|"}, '
+            '"model": "tests.integertuplemodel", "pk": 1'
+            '}]'
+        )
+        obj = list(deserialize('json', dump))[0].object
+        self.assertEqual(obj.values, (3, 1, 2))
 
 
 class FormCollectionFieldTestCase(TestCase):

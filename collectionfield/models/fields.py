@@ -137,6 +137,14 @@ class CollectionField(Field):
     def get_prep_value(self, value):
         return self.collection_converter.dump(value)
 
+    def value_to_string(self, obj):
+        """
+        Returns a string value of this field from the passed obj.
+        This is used by the serialization framework.
+        """
+        value = self.value_from_object(obj)
+        return self.get_prep_value(value)
+
     def validate(self, value, model_instance):
         """
         Validates value and throws ValidationError.
