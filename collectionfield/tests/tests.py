@@ -2,6 +2,7 @@
 
 from __future__ import unicode_literals
 
+import json
 from decimal import Decimal
 
 from django.utils import six
@@ -680,11 +681,13 @@ class ModelSerializationTestCase(TestCase):
             values={Decimal('1.2'), Decimal('55.5')}
         )
         self.assertEqual(
-            serialize('json', [obj]),
-            '[{'
-            '"fields": {"values": "|55.5|1.2|"}, '
-            '"model": "tests.decimalsetmodel", "pk": 1'
-            '}]'
+            json.loads(serialize('json', [obj])),
+            json.loads(
+                '[{'
+                '"fields": {"values": "|55.5|1.2|"}, '
+                '"model": "tests.decimalsetmodel", "pk": 1'
+                '}]'
+            )
         )
 
     def test_model_deserialization_json(self):
