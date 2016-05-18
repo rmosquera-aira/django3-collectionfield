@@ -6,6 +6,7 @@ from decimal import Decimal
 
 from django.utils import six
 from django.core.exceptions import ValidationError
+from django.core.serializers import serialize, deserialize
 from django.forms import modelform_factory
 
 from django.test import TestCase
@@ -670,6 +671,31 @@ class DeconstructTestCase(TestCase):
                 ]
              }
         )
+
+
+class ModelSerializationTestCase(TestCase):
+
+    def test_model_serialization_json(self):
+        obj = DecimalSetModel.objects.create(
+            values={Decimal('1.2'), Decimal('55.5')}
+        )
+        self.assertEqual(
+            serialize('json', [obj]),
+            '[{'
+            '"fields": {"values": "|55.5|1.2|"}, '
+            '"model": "tests.decimalsetmodel", "pk": 1'
+            '}]'
+        )
+
+    def test_model_deserialization_json(self):
+        dump = (
+            '[{'
+            '"fields": {"values": "|55.5|1.2|"}, '
+            '"model": "tests.decimalsetmodel", "pk": 1'
+            '}]'
+        )
+        obj = deserialize('json', dump).next().object
+        self.assertEqual(obj.values, {Decimal('1.2'), Decimal('55.5')})
 
 
 class FormCollectionFieldTestCase(TestCase):
