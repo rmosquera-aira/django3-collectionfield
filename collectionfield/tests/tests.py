@@ -677,15 +677,13 @@ class DeconstructTestCase(TestCase):
 class ModelSerializationTestCase(TestCase):
 
     def test_model_serialization_json(self):
-        obj = DecimalSetModel.objects.create(
-            values={Decimal('1.2'), Decimal('55.5')}
-        )
+        obj = IntegerTupleModel.objects.create(values=(3, 1, 2))
         self.assertEqual(
             json.loads(serialize('json', [obj])),
             json.loads(
                 '[{'
-                '"fields": {"values": "|55.5|1.2|"}, '
-                '"model": "tests.decimalsetmodel", "pk": 1'
+                '"fields": {"values": "|3|1|2|"}, '
+                '"model": "tests.integertuplemodel", "pk": 1'
                 '}]'
             )
         )
@@ -693,12 +691,12 @@ class ModelSerializationTestCase(TestCase):
     def test_model_deserialization_json(self):
         dump = (
             '[{'
-            '"fields": {"values": "|55.5|1.2|"}, '
-            '"model": "tests.decimalsetmodel", "pk": 1'
+            '"fields": {"values": "|3|1|2|"}, '
+            '"model": "tests.integertuplemodel", "pk": 1'
             '}]'
         )
-        obj = deserialize('json', dump).next().object
-        self.assertEqual(obj.values, {Decimal('1.2'), Decimal('55.5')})
+        obj = list(deserialize('json', dump))[0].object
+        self.assertEqual(obj.values, (3, 1, 2))
 
 
 class FormCollectionFieldTestCase(TestCase):
