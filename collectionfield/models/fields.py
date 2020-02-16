@@ -6,7 +6,6 @@ from django.db.models.fields import Field
 from django.core import exceptions
 from django.utils.functional import cached_property
 from django.utils.text import capfirst
-from django.utils import six
 
 from collectionfield.converter import CollectionConverter
 from collectionfield.validators import (
@@ -63,7 +62,7 @@ class CollectionField(Field):
     """Model field to store collections"""
 
     def __init__(self, verbose_name=None, name=None, collection_type=list,
-                 item_type=six.text_type, sort=False, unique_items=None,
+                 item_type=str, sort=False, unique_items=None,
                  max_items=None, delimiter='|', **kwargs):
         """
         :param collection_type: type (class) of this collection
@@ -106,7 +105,7 @@ class CollectionField(Field):
         name, path, args, kwargs = super(CollectionField, self).deconstruct()
         if self.collection_type is not list:
             kwargs['collection_type'] = self.collection_type
-        if self.item_type is not six.text_type:
+        if self.item_type is not str:
             kwargs['item_type'] = self.item_type
         if self.sort:
             kwargs['sort'] = True

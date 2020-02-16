@@ -7,7 +7,6 @@ import re
 from django import forms
 from django.utils.encoding import smart_text
 from django.utils.translation import ugettext_lazy as _
-from django.utils import six
 
 from collectionfield.validators import (
     MaxItemsValidator, ConvertedMaxLengthValidator
@@ -24,7 +23,7 @@ class CollectionFieldMixin(object):
     collection_field_compatible = True
 
     def __init__(self, collection_type=list,
-                 item_type=six.text_type, sort=False, unique_items=False,
+                 item_type=str, sort=False, unique_items=False,
                  max_items=None, max_length=None, delimiter='|',
                  *args, **kwargs):
         self.collection_type = collection_type
@@ -65,7 +64,7 @@ class CollectionField(CollectionFieldMixin, forms.Field):
 
     def prepare_value(self, value):
         """Converts value to string for widget usage"""
-        if not isinstance(value, six.string_types):
+        if not isinstance(value, str):
             value = value or ()
             value = self.collection_type(
                 self.item_type(item) for item in value
@@ -82,7 +81,7 @@ class CollectionField(CollectionFieldMixin, forms.Field):
             if self.sort:
                 collection = sorted(collection)
             value = self.format_separator().join(
-                six.text_type(item) for item in collection
+                str(item) for item in collection
             )
         return value
 
@@ -156,7 +155,7 @@ class CollectionChoiceField(CollectionFieldMixin, forms.MultipleChoiceField):
             if self.sort:
                 collection = sorted(collection)
             value = choicelist(
-                six.text_type(item) for item in collection
+                str(item) for item in collection
             )
         return value
 

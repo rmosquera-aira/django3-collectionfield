@@ -6,7 +6,6 @@ import json
 from decimal import Decimal
 
 import django
-from django.utils import six
 from django.core.exceptions import ValidationError
 from django.core.serializers import serialize, deserialize
 from django.forms import modelform_factory
@@ -1170,7 +1169,7 @@ class ModelFormCollectionFieldTestCase(TestCase):
         field = form.fields['values']
         self.assertIsInstance(field, CollectionField)
         self.assertEqual(field.collection_type, list)
-        self.assertEqual(field.item_type, six.text_type)
+        self.assertEqual(field.item_type, str)
         self.assertFalse(field.sort)
         self.assertIsNone(field.max_items)
         self.assertTrue(field.required)
@@ -1292,7 +1291,7 @@ class ModelFormCollectionChoiceFieldTestCase(TestCase):
         field = form.fields['values']
         self.assertIsInstance(field, CollectionChoiceField)
         self.assertEqual(field.collection_type, list)
-        self.assertEqual(field.item_type, six.text_type)
+        self.assertEqual(field.item_type, str)
         self.assertFalse(field.sort)
         self.assertIsNone(field.max_items)
         self.assertTrue(field.required)
