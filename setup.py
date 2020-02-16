@@ -42,11 +42,11 @@ class Test(Command):
 
 
 setup(
-    name='django-collectionfield',
+    name='django3-collectionfield',
     version='0.0.4',
     description='Custom Django model field to store multiple values.',
     long_description=long_description,
-    url='https://github.com/escer/django-collectionfield',
+    url='https://github.com/metalbass/django3-collectionfield',
     author='Pawel Scierski',
     author_email='escer@protonmail.com',
     license='MIT',
