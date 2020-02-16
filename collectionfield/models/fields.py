@@ -124,7 +124,7 @@ class CollectionField(Field):
     def get_internal_type(self):
         return 'CharField'
 
-    def from_db_value(self, value, expression, connection, context):
+    def from_db_value(self, value, expression, connection):
         return self.collection_converter.load(value)
 
     def to_python(self, value):
