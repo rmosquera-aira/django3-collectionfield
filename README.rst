@@ -1,14 +1,8 @@
-django-collectionfield
-======================
+django3-collectionfield
+=======================
 
-.. image:: https://api.travis-ci.org/escer/django-collectionfield.svg?branch=master
-   :target: https://travis-ci.org/escer/django-collectionfield
-.. image:: https://img.shields.io/pypi/v/django-collectionfield.svg
-   :target: https://pypi.python.org/pypi/django-collectionfield
-.. image:: https://coveralls.io/repos/github/escer/django-collectionfield/badge.svg?branch=master
-   :target: https://coveralls.io/github/escer/django-collectionfield?branch=master
-
-A reusable Django model field to store collections.
+A reusable Django model field to store collections. Ported for django 3 and python 3.
+You can find the original here: https://github.com/escer/django-collectionfield
 
 Features
 --------
@@ -25,7 +19,7 @@ Installation
 
 .. code-block:: python
 
-   pip install django-collectionfield
+   pip install django3-collectionfield
    
 
 Usage
@@ -128,7 +122,7 @@ Choices and collection size limit:
    tagged_model.get_tags_display(delimiter='', mapper=li_mapper, wrapper=ul_wrapper)
    '<ul><li>Action</li><li>Horror</li></ul>'
 
-Django built-in validators work with entire field values. ``django-collectionfield`` provide validation of single collection items:
+Django built-in validators work with entire field values. ``django3-collectionfield`` provide validation of single collection items:
 
 .. code-block:: python
 
@@ -217,8 +211,8 @@ Default delimiter ('|') and maximum length can be configured:
 Requirements
 ------------
 
-Python: 2.7, 3.4, 3.5
+Python: 3.5
 
-Django: 1.8, 1.9, 1.10
+Django: 3
 
 .. TODO: Changes
